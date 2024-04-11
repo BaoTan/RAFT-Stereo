@@ -74,6 +74,8 @@ class RAFTStereo(nn.Module):
         image2 = (2 * (image2 / 255.0) - 1.0).contiguous()
 
         # run the context network
+        # autocast是PyTorch中的一个上下文管理器，用于控制混合精度训练。
+        # 在autocast的作用范围内，PyTorch会自动将部分计算转换为半精度浮点数（float16），以减少内存占用并加快计算速度
         with autocast(enabled=self.args.mixed_precision):
             if self.args.shared_backbone:
                 *cnet_list, x = self.cnet(torch.cat((image1, image2), dim=0), dual_inp=True, num_layers=self.args.n_gru_layers)

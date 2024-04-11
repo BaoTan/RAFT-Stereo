@@ -80,6 +80,8 @@ class BasicMotionEncoder(nn.Module):
         flo = F.relu(self.convf1(flow))
         flo = F.relu(self.convf2(flo))
 
+        # torch.cat是PyTorch中的一个函数，用于沿着指定维度对张量进行拼接操作
+        # 拼接的维度必须在所有张量中是相同的，除了沿着拼接维度之外，其他维度的大小必须完全一致
         cor_flo = torch.cat([cor, flo], dim=1)
         out = F.relu(self.conv(cor_flo))
         return torch.cat([out, flow], dim=1)
@@ -90,6 +92,9 @@ def pool2x(x):
 def pool4x(x):
     return F.avg_pool2d(x, 5, stride=4, padding=1)
 
+#这段代码定义了一个函数interp(x, dest)，用于对输入张量x进行插值操作，使其形状与目标张量dest的高度和宽度相匹配。具体解释如下：
+#定义了插值操作的参数，其中mode: 'bilinear'表示使用双线性插值方法，align_corners: True表示在插值过程中保持原始张量的角点对齐。
+#调用PyTorch中的F.interpolate函数，对输入张量x进行插值操作。通过传入目标张量dest的高度和宽度，以及之前定义的插值参数interp_args，实现将输入张量x的大小调整为与目标张量dest相匹配的操作。
 def interp(x, dest):
     interp_args = {'mode': 'bilinear', 'align_corners': True}
     return F.interpolate(x, dest.shape[2:], **interp_args)

@@ -256,6 +256,7 @@ class MultiBasicEncoder(nn.Module):
         else:
             self.dropout = None
 
+        # 对神经网络模型中的不同类型层进行初始化操作
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
