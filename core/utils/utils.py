@@ -6,6 +6,9 @@ from scipy import interpolate
 
 class InputPadder:
     """ Pads images such that dimensions are divisible by 8 """
+    # 首先从dims中获取图像的高度和宽度，然后计算需要填充的高度和宽度，使其能够被divis_by整除。
+    # 根据mode的取值，如果是'sintel'模式，则计算四个方向上的填充值，分别为左、右、上、下；
+    # 如果不是'sintel'模式，则只计算水平方向的填充值。最终将填充值存储在self._pad中以备后续使用。
     def __init__(self, dims, mode='sintel', divis_by=8):
         self.ht, self.wd = dims[-2:]
         pad_ht = (((self.ht // divis_by) + 1) * divis_by - self.ht) % divis_by
@@ -15,8 +18,12 @@ class InputPadder:
         else:
             self._pad = [pad_wd//2, pad_wd - pad_wd//2, 0, pad_ht]
 
+    # 在Python中，带有星号（*）前缀的参数（例如*inputs）表示接受任意数量的位置参数，并将它们作为一个元组传递给函数。
     def pad(self, *inputs):
+        # 断言确保所有输入的张量维度都为4（通常表示为(batch_size, channels, height, width)）
         assert all((x.ndim == 4) for x in inputs)
+        # 对每个输入张量进行填充操作。填充操作使用了PyTorch中的F.pad函数，通过传入输入张量和预先计算好的填充值self._pad，
+        # 采用"replicate"模式进行填充（即复制边界像素进行填充）
         return [F.pad(x, self._pad, mode='replicate') for x in inputs]
 
     def unpad(self, x):

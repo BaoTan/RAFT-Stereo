@@ -202,19 +202,21 @@ class MultiBasicEncoder(nn.Module):
         self.norm_fn = norm_fn
         self.downsample = downsample
 
-        if self.norm_fn == 'group':
+        # 根据self.norm_fn的取值选择不同的归一化方法
+        if self.norm_fn == 'group': # 分组归一化，其中num_groups=8表示将通道分成8组进行归一化
             self.norm1 = nn.GroupNorm(num_groups=8, num_channels=64)
 
-        elif self.norm_fn == 'batch':
+        elif self.norm_fn == 'batch': # 批归一化
             self.norm1 = nn.BatchNorm2d(64)
 
-        elif self.norm_fn == 'instance':
+        elif self.norm_fn == 'instance': # 实例归一化
             self.norm1 = nn.InstanceNorm2d(64)
 
-        elif self.norm_fn == 'none':
+        elif self.norm_fn == 'none': # 不进行任何归一化
             self.norm1 = nn.Sequential()
 
         self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=1 + (downsample > 2), padding=3)
+        # 其中inplace=True表示在原地进行操作，即将计算结果直接覆盖到原始张量上，节省内存空间。这样设置可以减少内存占用，但可能会影响梯度的计算，因此需要谨慎使用。
         self.relu1 = nn.ReLU(inplace=True)
 
         self.in_planes = 64
