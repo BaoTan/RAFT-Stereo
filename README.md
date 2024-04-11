@@ -79,6 +79,9 @@ iRaftStereo_RVC ranked 2nd on the [stereo leaderboard](http://www.robustvision.n
 To use the model, download + unzip [models.zip](https://www.dropbox.com/s/ftveifyqcomiwaq/models.zip) and run
 ```
 python demo.py --restore_ckpt models/iraftstereo_rvc.pth --context_norm instance -l=datasets/ETH3D/two_view_testing/*/im0.png -r=datasets/ETH3D/two_view_testing/*/im1.png
+
+# example my
+python demo.py --restore_ckpt models/iraftstereo_rvc.pth --context_norm instance -l=/home/paco/work_datas/3d_datas/eth3d/two_view_test/storage_room_3l/im0.png -r=/home/paco/work_datas/3d_datas/eth3d/two_view_test/storage_room_3l/im1.png
 ```
 
 Thank you to [Insta360](https://www.insta360.com/) and Jiang et al. for their excellent work.
@@ -95,7 +98,13 @@ or downloaded from [google drive](https://drive.google.com/drive/folders/1booUFY
 You can demo a trained model on pairs of images. To predict stereo for Middlebury, run
 ```Shell
 python demo.py --restore_ckpt models/raftstereo-middlebury.pth --corr_implementation alt --mixed_precision -l=datasets/Middlebury/MiddEval3/testF/*/im0.png -r=datasets/Middlebury/MiddEval3/testF/*/im1.png
+# example of my
+python demo.py --restore_ckpt models/raftstereo-middlebury.pth --corr_implementation alt --mixed_precision -l=/home/paco/work_datas/3d_datas/middlebury/MiddEval3-data-F/MiddEval3/testF/Newkuba/im0.png -r=/home/paco/work_datas/3d_datas/middlebury/MiddEval3-data-F/MiddEval3/testF/Newkuba/im1.png
+
+python demo.py --restore_ckpt models/raftstereo-middlebury.pth --corr_implementation alt --mixed_precision -l=/home/paco/work_datas/3d_datas/MPI_Sintel/MPI-Sintel-stereo-training-20150305/training/clean_left/alley_1/frame_0001.png -r=/home/paco/work_datas/3d_datas/MPI_Sintel/MPI-Sintel-stereo-training-20150305/training/clean_right/alley_1/frame_0001.png
+
 ```
+
 Or for ETH3D:
 ```Shell
 python demo.py --restore_ckpt models/raftstereo-eth3d.pth -l=datasets/ETH3D/two_view_testing/*/im0.png -r=datasets/ETH3D/two_view_testing/*/im1.png
